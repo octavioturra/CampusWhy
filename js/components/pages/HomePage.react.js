@@ -99,13 +99,13 @@ class HomePage extends Component {
       <form action="#" onSubmit={this.doLogin.bind(this)}>
         <div className="form-group">
           <label htmlFor="email">Email:</label>
-          <input id="email" type="email" onChange={this.setValue('email').bind(this)} required/>
+          <input className="form-control" id="email" type="email" onChange={this.setValue('email').bind(this)} required/>
         </div>
         <div className="form-group">
           <label htmlFor="password">Senha:</label>
-          <input id="password" type="password" onChange={this.setValue('password').bind(this)} required/>
+          <input className="form-control" id="password" type="password" onChange={this.setValue('password').bind(this)} required/>
         </div>
-        <button type="submit">Entrar</button>
+        <button className="btn btn-inverse" type="submit">Entrar</button>
       </form>
     </div>);
     var add = (<form action="#" onSubmit={this.addAnswer.bind(this)}>

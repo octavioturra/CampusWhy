@@ -75,7 +75,6 @@ ReactDOM.render(
     <Router history={createHistory()}>
       <Route component={App}>
         <Route path="/" component={HomePage} />
-        <Route path="/readme" component={ReadmePage} />
         <Route path="*" component={NotFoundPage} />
       </Route>
     </Router>
