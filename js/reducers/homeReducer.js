@@ -13,25 +13,114 @@
  * add it in the rootReducer.js.
  */
 
-import { CHANGE_OWNER_NAME, CHANGE_PROJECT_NAME } from '../constants/AppConstants';
+import {
+  LOGIN_REQUEST,
+  LOGIN_ERROR,
+  LOGIN_SUCCESS,
+  GET_REASONS_REQUEST,
+  GET_REASONS_ERROR,
+  GET_REASONS_BIND,
+  GET_PROFESSIONS_REQUEST,
+  GET_PROFESSIONS_ERROR,
+  GET_PROFESSIONS_BIND,
+  SET_REASONS_REQUEST,
+  SET_REASONS_ERROR,
+  SET_REASONS_SUCCESS,
+  SET_PROFESSIONS_REQUEST,
+  SET_PROFESSIONS_ERROR,
+  SET_PROFESSIONS_SUCCESS,
+  ADD_ANSWER_REQUEST,
+  ADD_ANSWER_ERROR,
+  ADD_ANSWER_SUCCESS,
+} from '../constants/AppConstants';
 import assignToEmpty from '../utils/assign';
 
 const initialState = {
-  projectName: 'React.js Boilerplate',
-  ownerName: 'mxstbr'
+  isFetching: false,
+  error: null,
+  loginData: null,
+  reasons: [],
+  professions: [],
+  sent: 0,
+  form: {
+    reason: null,
+    nps: null,
+    npsReason: null,
+    genre: null,
+    profission: null,
+    contactType: null,
+    contact: null,
+    photoUrl: null,
+    free: null
+  },
+  added: []
 };
 
 function homeReducer(state = initialState, action) {
-  Object.freeze(state); // Don't mutate state directly, always use assign()!
+  // Object.freeze(state); // Don't mutate state directly, always use assign()!
   switch (action.type) {
-    case CHANGE_OWNER_NAME:
-      return assignToEmpty(state, {
-        ownerName: action.name
-      });
-    case CHANGE_PROJECT_NAME:
-      return assignToEmpty(state, {
-        projectName: action.name
-      });
+    case LOGIN_REQUEST:
+    case GET_REASONS_REQUEST:
+    case GET_PROFESSIONS_REQUEST:
+    case SET_REASONS_REQUEST:
+    case SET_REASONS_REQUEST:
+    case ADD_ANSWER_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        error: null
+      };
+    case LOGIN_ERROR:
+    case GET_REASONS_ERROR:
+    case GET_PROFESSIONS_ERROR:
+    case SET_REASONS_ERROR:
+    case SET_REASONS_ERROR:
+    case ADD_ANSWER_ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
+      };
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+        loginData: action.payload
+      };
+      case GET_REASONS_BIND:
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+        reasons: [...new Set([...state.reasons, ...action.payload])]
+      };
+      case GET_PROFESSIONS_BIND:
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+        professions: [...new Set([...state.professions, ...action.payload])]
+      };
+      case SET_REASONS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+      }
+      case SET_REASONS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+      }
+      case ADD_ANSWER_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+        sent: state.sent + 1
+      }
     default:
       return state;
   }

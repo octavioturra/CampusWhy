@@ -27,30 +27,199 @@
 // It makes more sense to have the asnyc actions before the non-async ones
 /* eslint-disable no-use-before-define */
 
-import { CHANGE_OWNER_NAME, CHANGE_PROJECT_NAME } from '../constants/AppConstants';
 
-export function asyncChangeProjectName(name) {
-  return (dispatch) => {
-    // You can do async stuff here!
-    // API fetching, Animations,...
-    // For more information as to how and why you would do this, check https://github.com/gaearon/redux-thunk
-    return dispatch(changeProjectName(name));
+import Db from '../services';
+import {
+  LOGIN_REQUEST,
+  LOGIN_ERROR,
+  LOGIN_SUCCESS,
+  GET_REASONS_REQUEST,
+  GET_REASONS_ERROR,
+  GET_REASONS_BIND,
+  GET_PROFESSIONS_REQUEST,
+  GET_PROFESSIONS_ERROR,
+  GET_PROFESSIONS_BIND,
+  SET_REASONS_REQUEST,
+  SET_REASONS_ERROR,
+  SET_REASONS_SUCCESS,
+  SET_PROFESSIONS_REQUEST,
+  SET_PROFESSIONS_ERROR,
+  SET_PROFESSIONS_SUCCESS,
+  ADD_ANSWER_REQUEST,
+  ADD_ANSWER_ERROR,
+  ADD_ANSWER_SUCCESS,
+} from '../constants/AppConstants';
+
+function loginRequest(){
+  return {
+    type: LOGIN_REQUEST
+  };
+}
+function loginSuccess(data){
+  return {
+    type: LOGIN_SUCCESS,
+    payload: data
+  };
+}
+function loginError(err){
+  return {
+    type: LOGIN_ERROR,
+    payload: err
   };
 }
 
-export function asyncChangeOwnerName(name) {
-  return (dispatch) => {
-    // You can do async stuff here!
-    // API fetching, Animations,...
-    // For more information as to how and why you would do this, check https://github.com/gaearon/redux-thunk
-    return dispatch(changeOwnerName(name));
+export function asyncLogin(user, password){
+  return dispatch => {
+    dispatch(loginRequest());
+    (new Db()).login(user, password)
+    .then((authData)=>dispatch(loginSuccess(authData)))
+    // .catch((err)=>dispatch(loginError(err)));
+    // .catch((err)=>dispatch(loginRequest(err)))
+  }
+}
+
+function getReasonsRequest(){
+  return {
+    type: GET_REASONS_REQUEST
+  };
+}
+function getReasonsBind(data){
+  return {
+    type: GET_REASONS_BIND,
+    payload: data
+  };
+}
+function getReasonsError(err){
+  return {
+    type: GET_REASONS_ERROR,
+    payload: err
   };
 }
 
-export function changeProjectName(name) {
-  return { type: CHANGE_PROJECT_NAME, name };
+export function asyncGetReasons(){
+  return dispatch => {
+    dispatch(getReasonsRequest());
+    (new Db()).getReasons()
+    .then((data)=>dispatch(getReasonsBind(data)))
+    // .catch((err)=>dispatch(getReasonsError(err)));
+    // .catch((err)=>dispatch(getReasonsRequest(err)))
+  }
 }
 
-export function changeOwnerName(name) {
-  return { type: CHANGE_OWNER_NAME, name };
+function getProfessionsRequest(){
+  return {
+    type: GET_PROFESSIONS_REQUEST
+  };
+}
+function getProfessionsBind(data){
+  return {
+    type: GET_PROFESSIONS_BIND,
+    payload: data
+  };
+}
+function getProfessionsError(err){
+  return {
+    type: GET_PROFESSIONS_ERROR,
+    payload: err
+  };
+}
+
+export function asyncGetProfessions(){
+  return dispatch => {
+    dispatch(getProfessionsRequest());
+    (new Db()).getProfessions()
+    .then((data)=>dispatch(getProfessionsBind(data)))
+    // .catch((err)=>dispatch(getProfessionsError(err)));
+    // .catch((err)=>dispatch(getProfessionsRequest(err)))
+  }
+}
+
+function setReasonsRequest(){
+  return {
+    type: SET_REASONS_REQUEST
+  };
+}
+function setReasonsSuccess(data){
+  return {
+    type: SET_REASONS_SUCCESS,
+    payload: data
+  };
+}
+function setReasonsError(err){
+  return {
+    type: SET_REASONS_ERROR,
+    payload: err
+  };
+}
+
+export function asyncSetReasons(reason){
+  return dispatch => {
+    dispatch(setReasonsRequest());
+    (new Db()).setReasons(reason)
+    .then((data)=>{
+      dispatch(setReasonsSuccess(data));
+      dispatch(asyncGetReasons());
+    })
+    // .catch((err)=>dispatch(getProfessionsError(err)));
+    // .catch((err)=>dispatch(getProfessionsRequest(err)))
+  }
+}
+
+function setProfessionsRequest(){
+  return {
+    type: SET_PROFESSIONS_REQUEST
+  };
+}
+function setProfessionsSuccess(data){
+  return {
+    type: SET_PROFESSIONS_SUCCESS,
+    payload: data
+  };
+}
+function setProfessionsError(err){
+  return {
+    type: GET_PROFESSIONS_ERROR,
+    payload: err
+  };
+}
+
+export function asyncSetProfessions(profession){
+  return dispatch => {
+    dispatch(setProfessionsRequest());
+    (new Db()).setProfessions(profession)
+    .then((data)=>{
+      dispatch(setProfessionsSuccess(data))
+      dispatch(asyncGetProfessions());
+    })
+    // .catch((err)=>dispatch(getProfessionsError(err)));
+    // .catch((err)=>dispatch(getProfessionsRequest(err)))
+  }
+}
+
+function addAnswerRequest(){
+  return {
+    type: ADD_ANSWER_REQUEST
+  };
+}
+function addAnswerSuccess(data){
+  return {
+    type: ADD_ANSWER_SUCCESS,
+    payload: data
+  };
+}
+function addAnswerError(err){
+  return {
+    type: ADD_ANSWER_ERROR,
+    payload: err
+  };
+}
+
+export function asyncAddAnswer(data){
+  return dispatch => {
+    dispatch(addAnswerRequest());
+    (new Db()).addAnswer(data)
+    .then(()=>dispatch(addAnswerSuccess()))
+    // .catch((err)=>dispatch(getProfessionsError(err)));
+    // .catch((err)=>dispatch(getProfessionsRequest(err)))
+  }
 }

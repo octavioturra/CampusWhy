@@ -8,13 +8,21 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Logo from '../../img/logo.png';
+
+const style = {
+  body : {
+    padding:'2rem',
+    paddingTop:'60px',
+  }
+};
 
 class App extends Component {
   render() {
     return (
-      <div className="wrapper">
-        <img className="logo" src={Logo} />
+      <div className="wrapper" style={style.body}>
+        <div className="navbar navbar-default navbar-fixed-top">
+          <a href="#" className="navbar-brand">Why Campus</a>
+        </div>
         { this.props.children }
       </div>
     );

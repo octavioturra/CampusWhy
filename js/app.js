@@ -8,20 +8,20 @@
  */
 
 // Load the ServiceWorker, the Cache polyfill, the manifest.json file and the .htaccess file
-import 'file?name=[name].[ext]!../serviceworker.js';
+// import 'file?name=[name].[ext]!../serviceworker.js';
 import 'file?name=[name].[ext]!../manifest.json';
 import 'file?name=[name].[ext]!../.htaccess';
 
 // Check for ServiceWorker support before trying to install it
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/serviceworker.js').then(() => {
-    // Registration was successful
-  }).catch(() => {
-    // Registration failed
-  });
-} else {
-  // No ServiceWorker Support
-}
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker.register('/serviceworker.js').then(() => {
+//     // Registration was successful
+//   }).catch(() => {
+//     // Registration failed
+//   });
+// } else {
+//   // No ServiceWorker Support
+// }
 
 // Import all the third party stuff
 import React from 'react';
@@ -50,7 +50,9 @@ import NotFoundPage from './components/pages/NotFound.react';
 import App from './components/App.react';
 
 // Import the CSS file, which HtmlWebpackPlugin transfers to the build folder
+require("bootstrap-webpack");
 import '../css/main.css';
+
 
 // Create the store with the redux-thunk middleware, which allows us
 // to do asynchronous things in the actions
