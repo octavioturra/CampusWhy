@@ -11,6 +11,7 @@
 // import 'file?name=[name].[ext]!../serviceworker.js';
 import 'file?name=[name].[ext]!../manifest.json';
 import 'file?name=[name].[ext]!../.htaccess';
+import 'file?name=[name].[ext]!../favicon.ico';
 
 // Check for ServiceWorker support before trying to install it
 // if ('serviceWorker' in navigator) {

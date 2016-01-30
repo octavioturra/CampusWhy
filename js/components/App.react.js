@@ -21,7 +21,9 @@ class App extends Component {
     return (
       <div className="wrapper" style={style.body}>
         <div className="navbar navbar-default navbar-fixed-top">
-          <a href="#" className="navbar-brand">Why Campus</a>
+          <a href="#" className="navbar-brand">
+            <img src={require('../../favicon.png')} alt="Campus Why" style={{display:'inline', margin:'5px', marginTop:'-7px'}}/>
+            CAMPUS<b>Why</b></a>
         </div>
         { this.props.children }
       </div>

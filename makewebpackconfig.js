@@ -11,7 +11,7 @@ module.exports = function(options) {
   if (options.prod) {
     // Entry
     entry = [
-      path.resolve(__dirname, 'js/app.js') // Start with js/app.js...
+      path.resolve(__dirname, 'CampusWhy/js/app.js') // Start with js/app.js...
     ];
     cssLoaders = ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader');
     // Plugins

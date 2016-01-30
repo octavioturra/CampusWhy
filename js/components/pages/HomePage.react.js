@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import {Map} from 'immutable';
 
+import {Modal} from '../Modal';
+
 const actions = [
   appActions,
 ];
@@ -51,9 +53,8 @@ class HomePage extends Component {
     this.props.actions.asyncGetProfessions();
   }
   componentWillReceiveProps(props){
-    console.log('>>>>>>>>>', props, props.home.sent, this.props.home.sent)
     if(props.home.sent!==this.props.home.sent){
-      console.log('SENT..........')
+      alert('Salvo com sucesso.');
       this.setState({
         ...this.state,
         'f.reason':'',
@@ -156,7 +157,7 @@ class HomePage extends Component {
     </form>)
     return (
       <div>
-      {(isFetching)?<div>Loading</div>:null}
+        <Modal shown={isFetching}/>
       {(loginData)?add:login}
       </div>);
   }
