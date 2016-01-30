@@ -5,13 +5,17 @@ var AppCachePlugin = require('appcache-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = function(options) {
-  var entry, jsLoaders, plugins, cssLoaders;
+  var output, entry, jsLoaders, plugins, cssLoaders;
 
   // If production is true
   if (options.prod) {
+    output = { // Compile into js/build.js
+      path: path.resolve(__dirname, 'build'),
+      filename: "/CampusWhy/js/bundle.js"
+    }
     // Entry
     entry = [
-      path.resolve(__dirname, 'CampusWhy/js/app.js') // Start with js/app.js...
+      path.resolve(__dirname, 'js/app.js') // Start with js/app.js...
     ];
     cssLoaders = ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader');
     // Plugins
@@ -48,6 +52,10 @@ module.exports = function(options) {
   // If app is in development
   } else {
     // Entry
+    output = { // Compile into js/build.js
+      path: path.resolve(__dirname, 'build'),
+      filename: "js/bundle.js"
+    }
     entry = [
       "webpack-dev-server/client?http://localhost:3000", // Needed for hot reloading
       "webpack/hot/only-dev-server", // See above
@@ -70,10 +78,7 @@ module.exports = function(options) {
 
   return {
     entry: entry,
-    output: { // Compile into js/build.js
-      path: path.resolve(__dirname, 'build'),
-      filename: "js/bundle.js"
-    },
+    output: output,
     module: {
       loaders: [{
           test: /\.js$/, // Transform all .js files required somewhere within an entry point...
