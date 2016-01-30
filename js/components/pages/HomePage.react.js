@@ -41,14 +41,19 @@ class HomePage extends Component {
       email: null,
       password: null,
       'f.reason':'',
-      'f.nps':'',
+      'f.qtt':'1',
+      'f.nps':'0',
       'f.comment':'',
-      'f.genre':'',
+      'f.genre':'m',
       'f.profession':'',
+      'f.name': '',
       'f.contact':'',
     };
   }
   componentWillMount(){
+    if(this.props.home.authToken){
+      this.props.actions.asyncTokenLogin(this.props.home.loginData, this.props.home.authToken);
+    }
     this.props.actions.asyncGetReasons();
     this.props.actions.asyncGetProfessions();
   }
@@ -58,10 +63,12 @@ class HomePage extends Component {
       this.setState({
         ...this.state,
         'f.reason':'',
-        'f.nps':'',
+        'f.qtt':'1',
+        'f.nps':'0',
         'f.comment':'',
-        'f.genre':'',
+        'f.genre':'m',
         'f.profession':'',
+        'f.name': '',
         'f.contact':'',
       });
     }
@@ -74,6 +81,16 @@ class HomePage extends Component {
     this.props.actions.asyncLogin(this.state.email, this.state.password);
     return false;
   }
+  doAnonimous(e){
+    e.preventDefault();
+    this.props.actions.asyncAnonimousLogin();
+    return false;
+  }
+  doLogout(e){
+    e.preventDefault();
+    this.props.actions.logout();
+    return false;
+  }
   addAnswer(e){
     e.preventDefault();
     if(!this.props.home.reasons.some((d)=>d===this.state['f.reason'])){
@@ -83,7 +100,7 @@ class HomePage extends Component {
       this.props.actions.asyncSetProfessions(this.state['f.profession']);
     }
     var data = {
-      sent_by: this.props.home.loginData.password.email
+      sent_by: this.props.home.loginData
     };
     for(let item in this.state){
       if(item.startsWith('f.')){
@@ -106,10 +123,14 @@ class HomePage extends Component {
           <label htmlFor="password">Senha:</label>
           <input className="form-control" id="password" type="password" onChange={this.setValue('password').bind(this)} required/>
         </div>
-        <button className="btn btn-inverse" type="submit">Entrar</button>
+        <button className="btn btn-default" type="submit">Entrar</button>&nbsp;
+        <button className="btn btn-primary" type="button" onClick={this.doAnonimous.bind(this)}>Não tenho login</button>
       </form>
     </div>);
     var add = (<form action="#" onSubmit={this.addAnswer.bind(this)}>
+      <h5 className=" pull-right">Entrevistador: <i>{this.props.home.loginData}</i>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button onClick={this.doLogout.bind(this)} className="btn btn-danger" type="button">sair</button></h5>
+      <br/>
       <datalist id="reasons">
         {reasons.map((r)=><option key={r} value={r}/>)}
       </datalist>
@@ -119,6 +140,19 @@ class HomePage extends Component {
       <div className="form-group">
         <label htmlFor="reason">Qual motivo de estar na Campus?</label>
         <input className="form-control" value={this.state['f.reason']} type="text" id="reason" list="reasons" onChange={this.setValue('f.reason').bind(this)} minLength="3"/></div>
+      <div className="form-group">
+        <label htmlFor="reason">De quantas campus você participou?</label>
+        <select className="form-control" value={this.state['f.qtt']}  name="qtt" id="qtt" onChange={this.setValue('f.qtt').bind(this)}>
+          <option value="1">Primeira</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+        </select></div>
       <div className="form-group">
         <label htmlFor="nps">De 0 a 10 qual a probabilidade de indicar a Campus para um amigo ou colega?</label>
         <select className="form-control" value={this.state['f.nps']}  name="nps" id="nps" onChange={this.setValue('f.nps').bind(this)}>
@@ -150,7 +184,11 @@ class HomePage extends Component {
         <input className="form-control" value={this.state['f.profession']}  list="professions" type="text" id="profession" onChange={this.setValue('f.profession').bind(this)}/>
       </div>
       <div className="form-group">
-        <label htmlFor="contact">Contato</label>
+        <label htmlFor="name">Nome</label>
+        <input className="form-control" value={this.state['f.name']}  type="text" id="name" onChange={this.setValue('f.name').bind(this)}/>
+      </div>
+      <div className="form-group">
+        <label htmlFor="contact">E-mail</label>
         <input className="form-control" value={this.state['f.contact']}  type="text" id="contact" onChange={this.setValue('f.contact').bind(this)}/>
       </div>
       <button className="btn btn-primary" type="submit">Adicionar</button>

@@ -30,9 +30,16 @@
 
 import Db from '../services';
 import {
+  LOGOUT,
   LOGIN_REQUEST,
   LOGIN_ERROR,
   LOGIN_SUCCESS,
+  ANONIMOUS_LOGIN_REQUEST,
+  ANONIMOUS_LOGIN_ERROR,
+  ANONIMOUS_LOGIN_SUCCESS,
+  TOKEN_LOGIN_REQUEST,
+  TOKEN_LOGIN_ERROR,
+  TOKEN_LOGIN_SUCCESS,
   GET_REASONS_REQUEST,
   GET_REASONS_ERROR,
   GET_REASONS_BIND,
@@ -49,6 +56,12 @@ import {
   ADD_ANSWER_ERROR,
   ADD_ANSWER_SUCCESS,
 } from '../constants/AppConstants';
+
+export function logout(){
+  return {
+    type: LOGOUT
+  };
+}
 
 function loginRequest(){
   return {
@@ -73,6 +86,62 @@ export function asyncLogin(user, password){
     dispatch(loginRequest());
     (new Db()).login(user, password)
     .then((authData)=>dispatch(loginSuccess(authData)))
+    // .catch((err)=>dispatch(loginError(err)));
+    // .catch((err)=>dispatch(loginRequest(err)))
+  }
+}
+
+function anonimousLoginRequest(){
+  return {
+    type: ANONIMOUS_LOGIN_REQUEST
+  };
+}
+function anonimousLoginSuccess(data){
+  return {
+    type: ANONIMOUS_LOGIN_SUCCESS,
+    payload: data
+  };
+}
+function anonimousLoginError(err){
+  return {
+    type: ANONIMOUS_LOGIN_ERROR,
+    payload: err
+  };
+}
+
+export function asyncAnonimousLogin(){
+  return dispatch => {
+    dispatch(anonimousLoginRequest());
+    (new Db()).anonimousLogin()
+    .then((authData)=>dispatch(anonimousLoginSuccess(authData)))
+    // .catch((err)=>dispatch(loginError(err)));
+    // .catch((err)=>dispatch(loginRequest(err)))
+  }
+}
+
+function tokenLoginRequest(){
+  return {
+    type: TOKEN_LOGIN_REQUEST
+  };
+}
+function tokenLoginSuccess(data){
+  return {
+    type: TOKEN_LOGIN_SUCCESS,
+    payload: data
+  };
+}
+function tokenLoginError(err){
+  return {
+    type: TOKEN_LOGIN_ERROR,
+    payload: err
+  };
+}
+
+export function asyncTokenLogin(email, token){
+  return dispatch => {
+    dispatch(tokenLoginRequest());
+    (new Db()).tokenLogin(email, token)
+    .then((authData)=>dispatch(tokenLoginSuccess(authData)))
     // .catch((err)=>dispatch(loginError(err)));
     // .catch((err)=>dispatch(loginRequest(err)))
   }

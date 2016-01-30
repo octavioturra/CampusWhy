@@ -31,8 +31,29 @@ export default class Db{
         if(error){
           return reject(error);
         }
-        return resolve(authData);
+        return resolve({email: email, token: authData.token});
       });
+    });
+  }
+  tokenLogin(email, token){
+    return new Promise((resolve, reject) => {
+      db.auth(token, (error, authData)=>{
+        if(error){
+          return reject(error);
+        }
+        console.log(authData)
+        return resolve({email, token: authData.token});
+      });
+    });
+  }
+  anonimousLogin(){
+    return new Promise((resolve, reject) => {
+      db.authAnonymously((error, authData)=>{
+        if(error){
+          return reject(error);
+        }
+        return resolve({email:'anonimous', token: authData.token});
+      }, {remember: "sessionOnly"});
     });
   }
   getReasons(){

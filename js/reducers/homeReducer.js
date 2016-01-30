@@ -14,9 +14,16 @@
  */
 
 import {
+  LOGOUT,
   LOGIN_REQUEST,
   LOGIN_ERROR,
   LOGIN_SUCCESS,
+  ANONIMOUS_LOGIN_REQUEST,
+  ANONIMOUS_LOGIN_ERROR,
+  ANONIMOUS_LOGIN_SUCCESS,
+  TOKEN_LOGIN_REQUEST,
+  TOKEN_LOGIN_ERROR,
+  TOKEN_LOGIN_SUCCESS,
   GET_REASONS_REQUEST,
   GET_REASONS_ERROR,
   GET_REASONS_BIND,
@@ -39,6 +46,7 @@ const initialState = {
   isFetching: false,
   error: null,
   loginData: null,
+  authToken: null,
   reasons: [],
   professions: [],
   sent: 0,
@@ -60,6 +68,8 @@ function homeReducer(state = initialState, action) {
   // Object.freeze(state); // Don't mutate state directly, always use assign()!
   switch (action.type) {
     case LOGIN_REQUEST:
+    case ANONIMOUS_LOGIN_REQUEST:
+    case TOKEN_LOGIN_REQUEST:
     case GET_REASONS_REQUEST:
     case GET_PROFESSIONS_REQUEST:
     case SET_REASONS_REQUEST:
@@ -71,6 +81,8 @@ function homeReducer(state = initialState, action) {
         error: null
       };
     case LOGIN_ERROR:
+    case ANONIMOUS_LOGIN_ERROR:
+    case TOKEN_LOGIN_ERROR:
     case GET_REASONS_ERROR:
     case GET_PROFESSIONS_ERROR:
     case SET_REASONS_ERROR:
@@ -81,12 +93,21 @@ function homeReducer(state = initialState, action) {
         isFetching: false,
         error: action.payload
       };
+    case LOGOUT:
+      return {
+        ...state,
+        loginData: null,
+        authToken: null
+      };
     case LOGIN_SUCCESS:
+    case ANONIMOUS_LOGIN_SUCCESS:
+    case TOKEN_LOGIN_SUCCESS:
       return {
         ...state,
         isFetching: false,
         error: null,
-        loginData: action.payload
+        loginData: action.payload.email,
+        authToken: action.payload.token
       };
       case GET_REASONS_BIND:
       return {
